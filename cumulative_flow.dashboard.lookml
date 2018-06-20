@@ -5,7 +5,7 @@
   - title: Cumulative Flow Diagram
     name: Cumulative Flow Diagram
     model: jira_block
-    explore: sprint_by_date
+    explore: sprint_by_date_2
     type: looker_area
     fields:
     - issue.count

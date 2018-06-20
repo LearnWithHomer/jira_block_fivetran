@@ -1,9 +1,5 @@
-view: sprint_by_date {
+view: sprint_by_date_2 {
   derived_table: {
-    persist_for: "12 hours"
-    # For Redshift only
-    #sortkeys: ["sprint_id","issue_id"]
-    #distribution_style: all
     sql: SELECT "issue_id",
        "time" as start_time,
        (select NVL(min(time), '9999-01-01') as end_time from jira.issue_sprint_history ish2
@@ -20,15 +16,12 @@ SELECT ist.issue_id as issue_id,
 FROM jira.issue_sprint ist
    LEFT OUTER JOIN jira.issue i on ist.issue_id = i.id
 WHERE 1 = 1
-AND  NOT EXISTS (select issue_id from jira.issue_sprint_history where issue_id = ist.issue_id)
- ;;
-    distribution_style: all
-    indexes: ["sprint_id", "issue_id"]
+AND  NOT EXISTS (select issue_id from jira.issue_sprint_history where issue_id = ist.issue_id) ;;
   }
 
   measure: count {
     type: count
-     drill_fields: [detail*]
+    drill_fields: [detail*]
   }
 
   dimension: issue_id {
@@ -46,17 +39,13 @@ AND  NOT EXISTS (select issue_id from jira.issue_sprint_history where issue_id =
     sql: ${TABLE}.end_time ;;
   }
 
-  dimension: value {
-    type: string
-    sql: ${TABLE}.value ;;
-  }
-
   dimension: sprint_id {
     type: number
     sql: ${TABLE}.sprint_id ;;
   }
 
-   set: detail {
-     fields: [issue_id, start_time_time, end_time_time, sprint_id]
-   }
+  set: detail {
+    fields: [issue_id, start_time_time, end_time_time, sprint_id]
+  }
+
 }

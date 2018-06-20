@@ -115,13 +115,13 @@ explore: project {
 
 ### HISTORICAL OVERVIEWS
 
-explore: sprint_by_date {
+explore: sprint_by_date_2 {
   label: "Sprint History"
 
   join: issue {
     view_label: "Issue"
     type: left_outer
-    sql_on: ${sprint_by_date.issue_id} = ${issue.id} ;;
+    sql_on: ${sprint_by_date_2.issue_id} = ${issue.id} ;;
     relationship: many_to_one
   }
 
@@ -142,13 +142,13 @@ explore: sprint_by_date {
 
   join: sprint {
     type: left_outer
-    sql_on: ${sprint.id} = ${sprint_by_date.sprint_id} ;;
+    sql_on: ${sprint.id} = ${sprint_by_date_2.sprint_id} ;;
     relationship: many_to_one
   }
 
   join: sprint_details {
     type: left_outer
-    sql_on: ${sprint_details.id} = ${sprint_by_date.sprint_id} ;;
+    sql_on: ${sprint_details.id} = ${sprint_by_date_2.sprint_id} ;;
     relationship: many_to_one
   }
 
