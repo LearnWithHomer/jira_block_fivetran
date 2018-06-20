@@ -22,7 +22,7 @@ FROM jira.issue_sprint ist
 WHERE 1 = 1
 AND  NOT EXISTS (select issue_id from jira.issue_sprint_history where issue_id = ist.issue_id)
  ;;
-
+    distribution_style: all
     indexes: ["sprint_id", "issue_id"]
   }
 

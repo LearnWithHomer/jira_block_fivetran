@@ -4,6 +4,7 @@ view: issue_comment_facts {
       count(distinct author_id) as number_of_issue_commenters,
       count(*) as number_of_issue_comments
       FROM jira.comment
+      GROUP BY 1
        ;;
   }
 

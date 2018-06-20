@@ -12,6 +12,7 @@ derived_table: {
   sql: SELECT
           DATEADD(day,CAST(numbers.number AS INT), '2013-01-01') as series_date
       FROM ${looker_numbers.SQL_TABLE_NAME} AS numbers ;;
+  distribution_style: all
   indexes: ["series_date"]
   }
 
@@ -20,4 +21,5 @@ derived_table: {
     timeframes: [raw,date,month,quarter,year]
     sql: ${TABLE}.series_date ;;
   }
+
 }

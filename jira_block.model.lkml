@@ -26,6 +26,7 @@ explore: sprint {
   }
 
 }
+explore: issue_extended {}
 
 # Update based on how you are associating versions to
 explore: version {
@@ -39,6 +40,7 @@ explore: version {
     relationship: one_to_one
     sql_on: ${issue_fix_version.issue_id} = ${issue.id} ;;
   }
+  join: issue_extended{}
 }
 
 explore: issue_history_2 {
@@ -166,6 +168,7 @@ explore: sprint_by_date {
 }
 
 
+
 explore: sprint_burndown {
   view_name: looker_calendar
   join: issue {
@@ -202,11 +205,4 @@ explore: sprint_burndown {
    ${looker_calendar.series_date_raw} >= ${sprint.start_raw}
   AND ${looker_calendar.series_date_raw} <= ${sprint.end_raw}
   ;;
-  #always_filter: {
-  #  filters: {
-  #    field: sprint.name
-  #    value: "Data Sprint 5"
-  #  }
-  #}
-
 }

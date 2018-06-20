@@ -14,8 +14,6 @@
 # that is meaningful for your users.  There can be lots of columns
 # so make them as easy to work woth as possible.
 
-explore: issue_extended {}
-
 view: issue_extended {
   derived_table: {
     datagroup_trigger: fivetran_datagroup
@@ -33,8 +31,7 @@ view: issue_extended {
                ,department.name as department_name
 
                ,project.name as project_name
-               ,resolution.name as resolution_name
-               ,severity.name as severity_name
+ ---             ,resolution.name as resolution_name
                ,status.name as status_name
                ,issue_type.name as issue_type_name
 
@@ -52,7 +49,7 @@ view: issue_extended {
                -- supported_browsers is used as an example of a multi value
                -- select field.  Use it as a template for your multi-value
                -- select fields
-               ,LISTAGG(issue_supported_browsers.value, ', ') as browser_list
+---               ,LISTAGG(issue_supported_browsers.value, ', ') as browser_list
 
                ,LISTAGG(component.name, ', ') as component_list
                ,LISTAGG(version.name, ', ') as fix_version_list
@@ -66,30 +63,26 @@ view: issue_extended {
          -- field_option table must have a unique alias
          -- each time it is referenced
          LEFT OUTER JOIN jira.field_option department -- unique alias
-            ON issue.department = department.id
+            ON issue.id = department.id
          LEFT OUTER JOIN jira.project
             ON issue.project = project.id
-         LEFT OUTER JOIN jira.field_option severity -- unique alias
-            ON issue.severity = severity.id
+     /*    LEFT OUTER JOIN jira.field_option severity -- unique alias
+              ON issue.severity = severity.id */ /*doesnt exist*/
          LEFT OUTER JOIN jira.status
             ON issue.status = status.id
          LEFT OUTER JOIN jira.issue_type
             ON issue.issue_type = issue_type.id
-
          -- Multi-value fields
-         LEFT OUTER JOIN jira.issue_supported_browsers
-            ON issue.id = issue_supported_browsers.issue_id
-
          -- Multi vlaue field that stores ids.  In this example
          -- the issue_component table stores component_id's
          -- which are looked up in the component table
-         LEFT OUTER JOIN jira.issue_component
-            ON issue.id = issue_component.issue_id
-         LEFT OUTER JOIN jira.component
-            ON issue_component.component_id = component.id
+        LEFT OUTER JOIN jira.issue_component_s
+             ON issue.id = issue_component_s.issue_id
+          LEFT OUTER JOIN jira.component
+             ON issue_component_s.component_id = component.id
 
-         LEFT OUTER JOIN jira.issue_fix_version
-            ON issue.id = issue_fix_version.issue_id
+         LEFT OUTER JOIN jira.issue_fix_version_s
+            ON issue.id = issue_fix_version_s.issue_id
          LEFT OUTER JOIN jira.version
             ON issue_fix_version_s.version_id = version.id
 
@@ -101,9 +94,11 @@ view: issue_extended {
          -- issue table along with each additional single value field.
 
          GROUP BY 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20
-                ,21,22,23,24,25,26,27
+                ,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,
+                46,47,48,49,50,51,52
 
         ;;
+    distribution_style: all
 
     indexes: ["id"]
   }
@@ -410,11 +405,4 @@ view: issue_extended {
     type: count
     drill_fields: [id, days_to_resolve_issue, created_date, severity ]
   }
-
-  # ----- Sets of fields for drilling ------
-  #set: detail {
-  #  fields: [
-  #    external_issue_id,
-  #  ]
-  #}
 }

@@ -19,7 +19,8 @@
       type: number
       hidden: yes
       primary_key: yes
-      sql: CONCAT(${TABLE}.ISSUE_ID,' ',${TABLE}.SPRINT_ID) ;;
+#       sql: CONCAT(${TABLE}.ISSUE_ID,' ',${TABLE}.SPRINT_ID) ;;
+      sql: CAST(${TABLE}.ISSUE_ID AS VARCHAR(20)) + CAST(${TABLE}.SPRINT_ID AS VARCHAR(20)) ;; #typecast inserted
     }
 
     dimension: issue_id {

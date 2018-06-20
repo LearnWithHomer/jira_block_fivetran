@@ -247,13 +247,6 @@ view: issue {
   measure: count {
     type: count
     drill_fields: [id, days_to_resolve_issue, created_date, severity ]
+
   }
-
-  # ----- Sets of fields for drilling ------
-  #set: detail {
-  #  fields: [
-  #    external_issue_id,
-  #  ]
-  #}
-
-}
+  }
